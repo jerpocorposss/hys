@@ -56,12 +56,12 @@ const MockCliParser = struct {
         // Valid flags - used for validation
         const valid_flags = [_][]const u8{
             "--help", "-h",      "--config", "--add",      "--export",
-            "--name", "--reset", "--pager",  "--no-pager", "-day",
+            "--name", "--reset", "--pager",  "--no-pager", "-day", "--sub", "-s",
         };
 
         // Flags that consume the next argument
         const flags_with_values = [_][]const u8{
-            "--add", "--export", "--name", "-day",
+            "--add", "--export", "--name", "-day", "--sub", "-s",
         };
 
         while (i < self.args.len) {
@@ -93,7 +93,23 @@ const MockCliParser = struct {
                 }
 
                 if (skip_next and i + 1 < self.args.len) {
-                    i += 2; // Skip flag and its value
+                    // Special handling for --sub/-s: it can have a feed URL and optional feed name
+                    if (std.mem.eql(u8, arg, "--sub") or std.mem.eql(u8, arg, "-s")) {
+                        // Skip the flag and the URL
+                        i += 2;
+                        // Check if there's an optional feed name (not a flag, URL, or file path)
+                        if (i < self.args.len) {
+                            const potential_name = self.args[i];
+                            if (!std.mem.startsWith(u8, potential_name, "-") and
+                                !isUrl(potential_name) and
+                                !isFilePath(potential_name)) {
+                                // This is an optional feed name, skip it too
+                                i += 1;
+                            }
+                        }
+                    } else {
+                        i += 2; // Skip flag and its value
+                    }
                 } else {
                     i += 1; // Just skip the flag
                 }
@@ -526,4 +542,25 @@ test "complex command with multiple features" {
     const group_name = parser.parseGroupName();
     try std.testing.expect(group_name != null);
     try std.testing.expectEqualStrings("tech", group_name.?);
+}
+
+test "--sub without group should not treat feed name as group" {
+    // Bug fix: hys --sub "https://site.com/feed" "Title" should NOT treat "Title" as a group
+    const args = [_][]const u8{ "hys", "--sub", "https://site.com/feed", "Title" };
+    const parser = MockCliParser.init(std.testing.allocator, &args);
+
+    const group_name = parser.parseGroupName();
+    // Should be null since "Title" is the feed name, not a group name
+    try std.testing.expect(group_name == null);
+}
+
+test "--sub with group should handle feed name correctly" {
+    // hys Group --sub "address.com/feed" "Title"
+    // Should identify Group as the group name and "Title" as the feed name (skipped)
+    const args = [_][]const u8{ "hys", "Group", "--sub", "https://address.com/feed", "Title" };
+    const parser = MockCliParser.init(std.testing.allocator, &args);
+
+    const group_name = parser.parseGroupName();
+    try std.testing.expect(group_name != null);
+    try std.testing.expectEqualStrings("Group", group_name.?);
 }

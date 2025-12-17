@@ -135,7 +135,23 @@ pub const CliParser = struct {
                 const skip_next = flags_with_values_map.has(arg);
 
                 if (skip_next and i + 1 < self.args.len) {
-                    i += 2; // Skip flag and its value
+                    // Special handling for --sub/-s: it can have a feed URL and optional feed name
+                    if (std.mem.eql(u8, arg, "--sub") or std.mem.eql(u8, arg, "-s")) {
+                        // Skip the flag and the URL
+                        i += 2;
+                        // Check if there's an optional feed name (not a flag, URL, or file path)
+                        if (i < self.args.len) {
+                            const potential_name = self.args[i];
+                            if (!std.mem.startsWith(u8, potential_name, "-") and
+                                !isUrl(potential_name) and
+                                !isFilePath(potential_name)) {
+                                // This is an optional feed name, skip it too
+                                i += 1;
+                            }
+                        }
+                    } else {
+                        i += 2; // Skip flag and its value
+                    }
                 } else {
                     i += 1; // Just skip the flag
                 }
