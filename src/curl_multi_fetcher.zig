@@ -18,6 +18,7 @@ pub const FetchResult = struct {
     data: ?[]u8,
     err: ?FetchError,
     status: FetchStatus = .Failed,
+    http_code: c_long = 0, // HTTP status code for error reporting
     // New headers from response to save for next request
     new_etag: ?[]u8 = null,
     new_last_modified: ?[]u8 = null,
@@ -103,6 +104,7 @@ fn buildTransferResultWithStatus(
             .data = null,
             .err = null,
             .status = .NotModified,
+            .http_code = ctx.http_code,
             .new_etag = ctx.etag_buffer,
             .new_last_modified = ctx.last_modified_buffer,
         };
@@ -119,6 +121,7 @@ fn buildTransferResultWithStatus(
             .data = null,
             .err = if (ctx.utf8_error) FetchError.InvalidUtf8 else if (ctx.http_code >= 400) FetchError.HttpError else if (ctx.oom_detected) FetchError.OutOfMemory else FetchError.NetworkError,
             .status = .Failed,
+            .http_code = ctx.http_code,
         };
         ctx.deinit();
         return;
@@ -131,6 +134,7 @@ fn buildTransferResultWithStatus(
             .data = null,
             .err = FetchError.NetworkError,
             .status = .Failed,
+            .http_code = ctx.http_code,
         };
         ctx.deinit();
         return;
@@ -143,6 +147,7 @@ fn buildTransferResultWithStatus(
             .data = null,
             .err = FetchError.OutOfMemory,
             .status = .Failed,
+            .http_code = ctx.http_code,
         };
         ctx.deinit();
         return;
@@ -153,6 +158,7 @@ fn buildTransferResultWithStatus(
         .data = data,
         .err = null,
         .status = .Success,
+        .http_code = ctx.http_code,
         .new_etag = ctx.etag_buffer,
         .new_last_modified = ctx.last_modified_buffer,
     };

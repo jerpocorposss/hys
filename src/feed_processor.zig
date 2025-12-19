@@ -155,7 +155,9 @@ pub fn normalizeIdentifier(allocator: std.mem.Allocator, id: []const u8) ![]cons
 pub const FeedTaskResult = struct {
     parsed: ?types.ParsedFeed = null,
     err: ?anyerror = null,
+    err_msg: ?[]u8 = null, // Detailed error message
     status: curl_multi.FetchStatus = .Failed,
+    status_code: c_long = 0, // HTTP status code for error reporting
     // New headers to save back to FeedConfig
     new_etag: ?[]u8 = null,
     new_last_modified: ?[]u8 = null,
@@ -185,6 +187,7 @@ pub const FeedProcessor = struct {
 
         // Store the status and new headers from fetch
         task_results[index].status = result.status;
+        task_results[index].status_code = result.http_code;
         task_results[index].new_etag = result.new_etag;
         task_results[index].new_last_modified = result.new_last_modified;
 
@@ -335,34 +338,42 @@ pub const FeedProcessor = struct {
             if (task_result.err) |err| {
                 // Use the original feed for error reporting
                 const fallback_name = original_feed.text orelse original_feed.xmlUrl;
+                
+                // Capture detailed error message
+                var error_msg_buf: [256]u8 = undefined;
+                const error_msg = switch (err) {
+                    error.CurlFailed => "Curl request failed (network/DNS/TLS issue)",
+                    error.TlsInitializationFailed => "TLS initialization failed",
+                    error.NetworkError => "Network error while fetching",
+                    error.Timeout => "Request timeout",
+                    error.ConnectionFailed => "Connection failed",
+                    error.HttpError => blk: {
+                        const http_code = task_result.status_code;
+                        if (http_code > 0) {
+                            const msg = std.fmt.bufPrint(&error_msg_buf, "HTTP {d}", .{http_code}) catch "HTTP error";
+                            break :blk msg;
+                        }
+                        break :blk "HTTP error response";
+                    },
+                    error.InvalidXml => "Invalid or malformed RSS/Atom feed",
+                    error.OutOfMemory => "Out of memory",
+                    else => blk: {
+                        const msg = std.fmt.bufPrint(&error_msg_buf, "{}", .{err}) catch "Unknown error";
+                        break :blk msg;
+                    },
+                };
+                
                 // Only print error immediately if not buffering for pager
                 if (display_manager.output_buffer == null and !display_manager.use_pager_streaming) {
                     display_manager.printFeedHeader(fallback_name);
-                    var error_buf: [512]u8 = undefined;
-                    const error_msg = try std.fmt.bufPrint(&error_buf, "Failed to read feed {s}", .{original_feed.xmlUrl});
-                    display_manager.printError(error_msg);
-
-                    // Provide more specific error information
-                    switch (err) {
-                        error.CurlFailed => {
-                            std.debug.print("Error details: Curl request failed. This could be due to:\n", .{});
-                            std.debug.print("  - Network connectivity issues\n", .{});
-                            std.debug.print("  - Invalid URL or unreachable server\n", .{});
-                            std.debug.print("  - Missing or misconfigured curl installation\n", .{});
-                            std.debug.print("  - SSL/TLS certificate issues\n", .{});
-                        },
-                        error.TlsInitializationFailed => {
-                            std.debug.print("Error details: TLS initialization failed. Falling back to curl.\n", .{});
-                        },
-                        error.NetworkError => {
-                            std.debug.print("Error details: Network error while fetching feed.\n", .{});
-                        },
-                        else => {
-                            std.debug.print("Error details: {}\n", .{err});
-                        },
-                    }
+                    var display_buf: [512]u8 = undefined;
+                    const display_msg = try std.fmt.bufPrint(&display_buf, "Failed to read feed: {s}", .{error_msg});
+                    display_manager.printError(display_msg);
                 }
-                try failed_feeds.append(try self.allocator.dupe(u8, fallback_name));
+                
+                // Store error message with feed for summary output
+                const error_with_reason = try std.fmt.allocPrint(self.allocator, "{s} ({s})", .{fallback_name, error_msg});
+                try failed_feeds.append(error_with_reason);
                 continue;
             }
 

@@ -605,7 +605,7 @@ pub const Formatter = struct {
                 current_pos += display_len;
             }
             // CASE 2: Word is normal size (Western) but doesn't fit on this line -> Wrap to next line
-            else if (display_len <= (max_width - indent_width)) {
+            else if (indent_width < max_width and display_len <= (max_width - indent_width)) {
                 self.writeOutput("\n");
                 self.writeOutput(indent);
                 self.writeOutput(color); // Re-apply color
