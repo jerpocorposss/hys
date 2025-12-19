@@ -38,21 +38,27 @@ Hys is a fast, lightweight, and opinionated terminal RSS reader written in Zig t
 
 ## 🚀 Quick Start
 
+### Homebrew (macOS/Linux)
 ```bash
-# 1. Install Hys with Homebrew
 brew tap superstarryeyes/tap
 brew install hys
+```
 
-# 2. Add your first feed
+### Arch Linux (AUR)
+```bash
+yay -S hys          # Latest release
+yay -S hys-git      # Latest development version
+```
+
+Add your first feed and start reading:
+```bash
 hys --sub "https://news.ycombinator.com/rss"
-
-# 3. Start reading
 hys
 ```
 
 ---
 
-## 📦 Installation
+## 📦 Installation (macOS/Linux/Windows)
 
 ### Prerequisites
 
