@@ -233,7 +233,7 @@ pub const DisplayManager = struct {
             }
 
             const pager_cmd: []const u8 = "less";
-            var argv = [_][]const u8{ pager_cmd, "-R", "-Q", "--no-vbell" };
+            var argv = [_][]const u8{ pager_cmd, "-R", "-Q" };
 
             if (builtin.os.tag == .windows) {
                 // Check if 'less' exists, otherwise fall back to direct print (not 'more')
@@ -261,6 +261,11 @@ pub const DisplayManager = struct {
 
             var child = std.process.Child.init(&argv, self.allocator);
             child.stdin_behavior = .Pipe;
+            // Set LESS_TERMCAP_vb to inhibit visual bell on both old and new versions of less
+            var env_map = try std.process.getEnvMap(self.allocator);
+            defer env_map.deinit();
+            try env_map.put("LESS_TERMCAP_vb", "\x1B[s");
+            child.env_map = &env_map;
             child.spawn() catch {
                 // Fallback: just print if pager fails
                 try self.stdout.writeAll(buf.items);
