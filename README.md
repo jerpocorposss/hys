@@ -1,4 +1,3 @@
-
 <div align="center">
 
 <img src="images/hys-icon.png" alt="Hys Icon" width="35%" />
@@ -10,7 +9,7 @@
 [![Terminal](https://img.shields.io/badge/interface-terminal-F2A33A.svg)](https://github.com/superstarryeyes/hys)
 [![Discord](https://img.shields.io/badge/Discord-Join%20our%20Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/z8sE2gnMNk)
 
-[Features](#-features) • [Quick Start](#-quick-start) • [Installation](#-installation) • [Usage](#-usage) • [Configuration](#️-configuration) • [Contributing](#️-contributing) • [License](#-license)
+[Features](#-features) • [Quick Start](#-quick-start-macoslinux) • [Installation](#-installation-macoslinuxwindows) • [Usage](#-usage) • [Configuration](#️-configuration) • [Contributing](#️-contributing) • [License](#-license)
 
 <img src="images/hys-screenshot.gif" alt="Hys Screenshot" width="100%" />
 
@@ -36,9 +35,9 @@ Hys is a fast, lightweight, and opinionated terminal RSS reader written in Zig t
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (macOS/Linux)
 
-### Homebrew (macOS/Linux)
+### Homebrew
 ```bash
 brew tap superstarryeyes/tap
 brew install hys
